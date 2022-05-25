@@ -6,8 +6,6 @@ const stripe = require('stripe')(process.env.STRIPE_KEY);
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
-var nodemailer = require("nodemailer");
-var sgTransport = require("nodemailer-sendgrid-transport");
 app.use(cors());
 app.use(express.json());
 
