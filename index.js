@@ -39,6 +39,7 @@ async function run() {
     const bookingCollection = client.db("Marley").collection("orders");
     const userCollection = client.db("Marley").collection("user");
     const paymentCollection = client.db("Marley").collection("payments");
+    const reviewCollection = client.db("Marley").collection("reviews");
 
     const verifyAdmin = async (req, res, next) => {
       const initiator = req.decoded.email;
@@ -121,11 +122,9 @@ async function run() {
         $set: user,
       };
       const result = await userCollection.updateOne(filter, updateDoc, options);
-      const token = jwt.sign(
-        { email: email },
-        process.env.SECRET,
-        { expiresIn: "1d" }
-      );
+      const token = jwt.sign({ email: email }, process.env.SECRET, {
+        expiresIn: "1d",
+      });
       res.send({ result, token });
     });
 
@@ -204,6 +203,23 @@ async function run() {
         payment_method_types: ["card"],
       });
       res.send({ clientSecret: paymentIntent.client_secret });
+    });
+
+    //review
+
+    app.get("/reviews", async (req, res) => {
+      console.log("query", req.query);
+      const query = {};
+      const cursor = reviewCollection.find(query);
+      let products;
+      products = await cursor.toArray();
+      res.send(products);
+      // console.log(products)
+    });
+    app.post("/reviews", async (req, res) => {
+      const newTool = req.body;
+      const result = await reviewCollection.insertOne(newTool);
+      res.send(result);
     });
   } finally {
     // console.log("Server Connected")
