@@ -63,8 +63,8 @@ async function run() {
       });
       res.send({clientSecret: paymentIntent.client_secret})
     });
-    //order status
-    app.patch('/order/:id', verifyJWT, async(req, res) =>{
+    //booking status
+    app.patch('/booking/:id', verifyJWT, async(req, res) =>{
       const id  = req.params.id;
       const payment = req.body;
       const filter = {_id: ObjectId(id)};
@@ -107,15 +107,15 @@ async function run() {
       res.send(result);
     });
 
-    //order
-    app.post("/order", async (req, res) => {
+    //booking
+    app.post("/booking", async (req, res) => {
       const detail = req.body;
       const result = await order.insertOne(detail);
 
       return res.send({ success: true, result });
     });
 
-    app.get("/order", async (req, res) => {
+    app.get("/booking", async (req, res) => {
       const query = {};
       const cursor = order.find(query);
       const result = await cursor.toArray();
@@ -123,7 +123,7 @@ async function run() {
     });
 
 
-    app.get('/order/:id', async(req, res) =>{
+    app.get('/booking/:id', async(req, res) =>{
       const id = req.params.id;
       const query = {_id: ObjectId(id)};
       const booking = await order.findOne(query);
