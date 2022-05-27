@@ -206,8 +206,6 @@ async function run() {
     });
 
     //review
-
-   
     app.post("/reviews", async (req, res) => {
       const newTool = req.body;
       const result = await reviewCollection.insertOne(newTool);
@@ -228,7 +226,7 @@ async function run() {
   });
 
   } finally {
-    // console.log("Server Connected")
+    
   }
 }
 
